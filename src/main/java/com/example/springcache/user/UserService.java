@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public User findOne() {
-        return userRepository.findById(0L).orElseThrow();
+        return userRepository.findById(1L).orElseThrow();
     }
 
     @PostConstruct
