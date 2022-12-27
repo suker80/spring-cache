@@ -19,7 +19,18 @@ public class UserController {
     }
 
     @GetMapping("/cache")
-    public List<User> cacheUser(){
+    public List<User> cacheUser() {
         return userService.cacheUser();
     }
+
+    @GetMapping("/cacheOne")
+    public User cacheOne() {
+        return userService.cacheOne();
+    }
+
+    @GetMapping("/userOne")
+    public User findUser() {
+        return userService.findOne();
+    }
+
 }

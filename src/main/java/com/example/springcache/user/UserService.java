@@ -22,6 +22,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User findOne() {
+        return userRepository.findById(0L).orElseThrow();
+    }
+
     @PostConstruct
     /*
       애플리케이션이 실행 될 때
@@ -36,12 +40,18 @@ public class UserService {
         List<User> saveAll = userRepository.saveAll(users);
 
         ListOperations<String, User> operations = redisTemplate.opsForList();
+        redisTemplate.opsForValue().set("one", saveAll.get(0));
         redisTemplate.delete("users");
         operations.rightPushAll("users",saveAll);
     }
 
     public List<User> cacheUser() {
         return redisTemplate.opsForList().range("users", 0, -1);
+
+    }
+
+    public User cacheOne() {
+        return redisTemplate.opsForValue().get("one");
 
     }
 }
