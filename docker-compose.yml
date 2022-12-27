@@ -16,10 +16,20 @@ services:
       - 80:8080
     depends_on:
       - mysqldb
+      - redis
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/testdb
       SPRING_DATASOURCE_USERNAME : root
       SPRING_DATASOURCE_PASSWORD : 1234
-
+  redis:
+    image: redis:alpine
+    command: redis-server --port 6379
+    container_name: redis_boot
+    hostname: redis_boot
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    ports:
+      - 6379:6379
 
 
