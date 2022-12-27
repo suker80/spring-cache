@@ -18,4 +18,8 @@ public class UserController {
         return userService.findAllUser();
     }
 
+    @GetMapping("/cache")
+    public List<User> cacheUser(){
+        return userService.cacheUser();
+    }
 }

@@ -28,7 +28,6 @@ public class RedisTest {
         }
         List<User> users1 = listOperations.range("users", 0, -1);
         users1.forEach(System.out::println);
-        listOperations.
 
 
     }
