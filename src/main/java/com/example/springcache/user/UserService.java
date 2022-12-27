@@ -1,6 +1,7 @@
 package com.example.springcache.user;
 
-import org.springframework.data.redis.core.ListOperations;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final RedisTemplate<String, User> redisTemplate;
@@ -17,41 +19,25 @@ public class UserService {
         this.userRepository = userRepository;
         this.redisTemplate = redisTemplate;
     }
-
-    public List<User> findAllUser() {
-        return userRepository.findAll();
-    }
-
-    public User findOne() {
-        return userRepository.findById(1L).orElseThrow();
-    }
-
     @PostConstruct
-    /*
-      애플리케이션이 실행 될 때
-      유저 1000명을 저장
-
-     */
     public void saveUser() {
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
             users.add(new User("이름"));
         }
         List<User> saveAll = userRepository.saveAll(users);
-
-        ListOperations<String, User> operations = redisTemplate.opsForList();
-        redisTemplate.opsForValue().set("one", saveAll.get(0));
-        redisTemplate.delete("users");
-        operations.rightPushAll("users",saveAll);
     }
 
-    public List<User> cacheUser() {
-        return redisTemplate.opsForList().range("users", 0, -1);
+    @Cacheable(cacheNames = "user")
+    public User cache() {
+        log.info("getting from database");
 
+        return userRepository.findById(1L).orElseThrow();
     }
 
-    public User cacheOne() {
-        return redisTemplate.opsForValue().get("one");
+    public User noCache() {
+        log.info("getting from database no cache");
 
+        return userRepository.findById(1L).orElseThrow();
     }
 }

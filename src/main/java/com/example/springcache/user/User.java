@@ -1,9 +1,10 @@
 package com.example.springcache.user;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class User
+public class User implements Serializable
 {
     private String name;
     public User(String name) {
