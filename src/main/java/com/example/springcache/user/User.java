@@ -1,4 +1,4 @@
-package com.example.springcache;
+package com.example.springcache.user;
 
 import javax.persistence.*;
 
