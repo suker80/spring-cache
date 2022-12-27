@@ -5,6 +5,13 @@ import javax.persistence.*;
 @Entity
 public class User
 {
+    public User(String name) {
+        this.name = name;
+    }
+
+    public User() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
